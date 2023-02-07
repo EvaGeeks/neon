@@ -2,6 +2,7 @@
 import yargs from 'yargs'
 import { hideBin } from 'yargs/helpers'
 import runInitPrompts from './prompts.js'
+import init from './init.js'
 
 yargs(hideBin(process.argv))
   .usage('usage: neno [options]')
@@ -15,6 +16,7 @@ yargs(hideBin(process.argv))
     () => {},
     (argv) => {
       runInitPrompts(argv._[1], argv).then(answers => {
+        init(argv, answers)
       })
     }
   )
