@@ -15,7 +15,6 @@ const init = (argv, answers) => {
     console.error("error: The library is already exist!")
     return
   }
-
 }
 
 export default init
