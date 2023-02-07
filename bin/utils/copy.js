@@ -62,6 +62,27 @@ const mergeTmpl2JSON = (from , to, data = {}) => {
   mergeObj2JSON(json, to)
 }
 
+const replaceFileText = (filepath, replacerList) => {
+  let file = fs.readFileSync(filepath, {encoding: 'utf8'});
+  let count = 0;
+  replacerList.forEach(function (replacer) {
+    let res;
+    while(res = file.match(replacer.from)) {
+      count += 1;
+      var to = typeof replacer.to === 'function'
+        ? replacer.to
+        : replacer.to.replace(/\$(\d+)/g, function (match, p1) {
+            return res[p1] || ''
+        });
+
+      file = file.replace(replacer.from, to);
+    }
+  })
+  if (count) {
+    fs.writeFileSync(filepath, file);
+  }
+}
+
 export {
   copyDir,
   copyFile,
@@ -69,5 +90,6 @@ export {
   copyTmpl,
   readTmpl,
   mergeJSON2JSON,
-  mergeTmpl2JSON
+  mergeTmpl2JSON,
+  replaceFileText
 }
